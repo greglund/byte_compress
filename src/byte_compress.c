@@ -4,85 +4,59 @@
 #include <stdint.h>
 
 
+#define BYTE_COMPRESS_OUT \
+   if (count > 1) \
+   { \
+      *out++ = 0x80 | count; \
+      size++; \
+   } \
+   \
+   *out++ = val; \
+   size++;
+
 int byte_compress(uint8_t* data_ptr, int data_size)
 {
-   uint8_t* out = data_ptr;
-   uint8_t val = 0xFF;
-   int count = 0;
-   int size = 0;
+   uint8_t* out;
+   int index;
+   int size;
+   int count;
+   uint8_t val;
 
-   while (data_size--)
+   if (data_size == 0)
+      return 0;
+
+   if (*data_ptr & 0x80)
+      return -1;  // Invalid value in 1st item
+
+   out = data_ptr;
+   val = *data_ptr++;
+   size = 0;
+   index = 1;
+   count = 1;
+
+   while (--data_size)
    {
-      if (*data_ptr >= 0x80)
-         return -(size + 1);
-
-      if ((*data_ptr != val) || (count == 0x7F))
+      if (*data_ptr & 0x80)
       {
-         if (val != 0xFF)
-         {
-            if (count > 1)
-            {
-               *out++ = 0x80 | count;
-               size++;
-            }
+         BYTE_COMPRESS_OUT
+         return -(index + 1); // Invalid value in nth item
+      }
 
-            *out++ = val;
-            size++;
-            count = 0;
-         }
-
+      if ((*data_ptr != val) ||
+            (count == 0x7F)) // Ensure the count does not overflow
+      {
+         // Output the count and value, begin counting again.
+         BYTE_COMPRESS_OUT
+         count = 0;
          val = *data_ptr;
       }
 
+      data_ptr++;
+      index++;
       count++;
-      data_ptr++;
    }
 
-   if (val != 0xFF)
-   {
-      if (count > 1)
-      {
-         *out++ = 0x80 | count;
-         size++;
-      }
-
-      *out = val;
-      size++;
-   }
-
-   return size;
-}
-
-int byte_decompress(const uint8_t* data_ptr, int data_size, uint8_t* out, int output_size_max)
-{
-   int size = 0;
-   int count = 0;
-   int i;
-
-   while (data_size--)
-   {
-      if ((*data_ptr & 0x80) && (data_size != 0))
-      {
-         count = *data_ptr & 0x7f;
-         data_ptr++;
-         data_size--;
-      }
-      else
-      {
-         count = 1;
-      }
-
-      for (i = 0; i < count; i++)
-      {
-         if (size < output_size_max)
-            *out++ = *data_ptr;
-
-         size++;
-      }
-
-      data_ptr++;
-   }
-
+   BYTE_COMPRESS_OUT
    return size;
 }
 
