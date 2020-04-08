@@ -14,6 +14,39 @@ The testing is done using the Ceedling test framework.  The basic test premises 
    - Long series of consectutive values, with a length greater than 0x7F
    - Invalid input values
 
+Results
+-------
+
+The output from running ceedling test suite over the unit tests is as follows:
+
+::
+
+   Test 'test_bytecompress.c'
+   --------------------------
+   Generating runner for test_bytecompress.c...
+   Compiling test_bytecompress_runner.c...
+   Compiling test_bytecompress.c...
+   Compiling unity.c...
+   Compiling byte_compress.c...
+   Compiling byte_decompress.c...
+   Compiling cmock.c...
+   Linking test_bytecompress.out...
+   Running test_bytecompress.out...
+
+   -----------
+   TEST OUTPUT
+   -----------
+   [test_bytecompress.c]
+     - "New size: 16"
+
+   --------------------
+   OVERALL TEST SUMMARY
+   --------------------
+   TESTED:  9
+   PASSED:  9
+   FAILED:  0
+   IGNORED: 0
+
 
 SOURCE
 ------

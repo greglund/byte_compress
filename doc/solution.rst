@@ -10,6 +10,11 @@ A handful of other details have been considered in this solution:
 - The maximum number of consecutive equal byte values that can be encoded is 0x7F.  If there are more, they will need to be encoded in subsequent output.
 - If a value > 0x7F is found in the input, the encoding will stop with an error code explained in the API
 
+Conclusion
+----------
+
+The compression encoding scheme is able to successfully compress data with consecutively occurring equal bytes.  The sample data given was compressed from 24 bytes to 16 bytes.
+
 The byte_compress function is implemented in C.  Here is the API:
 
 API
