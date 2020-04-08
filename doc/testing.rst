@@ -3,10 +3,11 @@ Testing
 
 A number of tests were performed to ensure the solution encoded input to compressed data well.  Additionally, a decompress function was written to ensure original data could be restored back to the uncompressed state from the encoded data.
 
-The testing is done using the Ceedling test framework.
+The testing is done using the Ceedling test framework.  The basic test premises are:
 
 1. Ensure the assignment data is compressible and decompressible
-2. Ensure that boundary conditions are tested
+2. Ensure that boundary conditions are tested:
+
    - No input data
    - Single input data item
    - No consecutive equal data values
