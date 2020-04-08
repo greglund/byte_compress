@@ -20,10 +20,19 @@ $(BUILDDIR):
 	mkdir $(BUILDDIR)
 
 $(DOXY_OUT): $(BUILDDIR)
-	mkdir $(DOXY_OUT)
+	mkdir $@
 	doxygen Doxyfile
+
+byte_compress.c:
+	cp ../src/byte_compress.c .
+
+byte_decompress.c:
+	cp ../src/byte_decompress.c .
+
+test_bytecompress.c:
+	cp ../test/test/test_bytecompress.c .
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-%: Makefile $(DOXY_OUT)
+%: Makefile $(DOXY_OUT) byte_compress.c byte_decompress.c test_bytecompress.c
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

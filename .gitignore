@@ -1,2 +1,5 @@
 test/build
-docs
+doc/_build
+doc/byte_compress.c
+doc/byte_decompress.c
+doc/test_bytecompress.c
